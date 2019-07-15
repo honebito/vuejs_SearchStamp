@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>SearchStamp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel='stylesheet' href='https://unpkg.com/normalize.css' />
+    <link rel='stylesheet' href='./style.css' />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+      $('.category_btnlist button').on('click',function(){
+          $('.category_btnlist button').removeClass('current');
+          $(this).addClass('current');
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="category_btnlist">
+        <button v-for="cate in singleCate" v-on:click="categorySearch(cate)">{{ cate }}</button>
+      </div>
+
+      <transition>
+      <ul class="stamp_list">
+        <li v-for="stamp in newStamps">
+            <p class="category">{{ stamp.category }}</p>
+          <p class="name">{{ stamp.name }}</p>
+          <img v-bind:src="stamp.image">
+        </li>
+      </ul>
+    </transition>
+      <p class="data_num">全{{ newStamps.length }}件</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          stamps: [
+            {name: 'オハヨウゴザイマス', category:'あいさつ', image: './img/honebito01.gif'},
+            {name: 'コンニチハ', category:'あいさつ', image: './img/honebito02.gif'},
+            {name: 'イイネ!!', category:'返事', image: './img/honebito04.gif'},
+            {name: 'ビックリ!', category:'感情表現', image: './img/honebito09.gif'},
+            {name: 'マダ?', category:'その他', image: './img/honebito03.gif'},
+            {name: 'OK!', category:'返事', image: './img/honebito05.gif'},
+            {name: 'ゴメン', category:'返事', image: './img/honebito06.gif'},
+            {name: 'ゴハンドウ?', category:'その他', image: './img/honebito07.gif'},
+            {name: 'ゲンキ?', category:'あいさつ', image: './img/honebito08.gif'},
+            {name: 'マタアシタ', category:'あいさつ', image: './img/honebito10.gif'},
+            {name: 'マタネ', category:'あいさつ', image: './img/honebito11.gif'},
+            {name: 'アリガトウ', category:'返事', image: './img/honebito12.gif'},
+            {name: 'タノシミ', category:'感情表現', image: './img/honebito13.gif'},
+            {name: 'ネテタ', category:'その他', image: './img/honebito14.gif'},
+            {name: 'オネガイ', category:'その他', image: './img/honebito15.gif'},
+            {name: 'ムカムカ', category:'感情表現', image: './img/honebito16.gif'},
+            {name: 'ガーン', category:'感情表現', image: './img/honebito17.gif'},
+            {name: 'カッコイイ', category:'感情表現', image: './img/honebito18.gif'},
+            {name: 'ドウスル?', category:'その他', image: './img/honebito19.gif'},
+            {name: 'ガンバレ', category:'返事', image: './img/honebito20.gif'},
+            {name: 'ドンマイ', category:'返事', image: './img/honebito21.gif'},
+            {name: 'マジ!!?', category:'感情表現', image: './img/honebito22.gif'},
+            {name: 'サンキュウ', category:'返事', image: './img/honebito23.gif'},
+            {name: 'ベンキョウチュウ', category:'その他', image: './img/honebito24.gif'},
+          ],
+          newStamps: [],
+          Category: [],
+          singleCate: []
+        },
+        created: function(){
+            this.newStamps = this.stamps;
+
+            for( var i = 0; i < this.stamps.length; i++){
+                this.Category.push(this.stamps[i].category);
+            }
+            //カテゴリ配列重複データ削除
+             this.Category.forEach((v) => {
+               if (!this.singleCate.includes(v)) {
+                 this.singleCate.push(v);
+               }
+             });             
+        },
+        methods: {
+          categorySearch: function(cate){
+            this.newStamps = [];
+            
+            for( var i = 0; i < this.stamps.length; i++){
+              if(this.stamps[i].category === cate){
+                this.newStamps.push(
+                  {name: this.stamps[i].name, category:this.stamps[i].category, image: this.stamps[i].image}
+                );
+              }
+            }
+          }
+        },
+      });
+      </script>
+  </body>
+</html>
